@@ -1,19 +1,24 @@
 package projetoboot;
 
 import java.util.Date;
-import java.util.Vector;
+import java.util.Set;
+import java.util.Comparator;
 
-public class Annotation {
+enum SortCriteria{
+    TITLE,CREATION,LASTMODIFICATION
+};
+
+public class Annotation{
     private String title;
     private String text;
     private Date creation;
     private Date lastmodification;
-    private Vector<String> metatag;
+    private Set<String> metatag;
 
     public String getTitle() {
         return title;
     }
-
+    
     public void setTitle(String title) {
         this.title = title;
     }
@@ -42,13 +47,32 @@ public class Annotation {
         this.lastmodification = lastmodification;
     }
 
-    public Vector<String> getMetatag() {
+    public Set<String> getMetatag() {
         return metatag;
     }
 
-    public void setMetatag(Vector<String> metatag) {
+    public void setMetatag(Set<String> metatag) {
         this.metatag = metatag;
     }
+
+    public static Comparator<Annotation> NameComparison = new Comparator<Annotation>(){
+        @Override
+        public int compare(Annotation an1,Annotation an2){
+            return an1.getTitle().compareTo(an2.getTitle());
+        }
+    };
     
+    public static Comparator<Annotation> CreationComparison = new Comparator<Annotation>(){
+        @Override
+        public int compare(Annotation an1,Annotation an2){
+            return an1.getCreation().compareTo(an2.getCreation());
+        }
+    };
     
+    public static Comparator<Annotation> UpdateComparison = new Comparator<Annotation>(){
+        @Override
+        public int compare(Annotation an1,Annotation an2){
+            return an1.getLastmodification().compareTo(an2.getLastmodification());
+        }
+    };
 }
