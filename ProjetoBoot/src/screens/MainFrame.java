@@ -1,12 +1,21 @@
 package screens;
 
 import filters.*;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import projetoboot.*;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -163,13 +172,62 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
+        int q = 0;
+        int i;
         Annotation an = new Annotation();
         an.setText(TextArea.getText());
+        an.setTitle(TitleField.getText());
         an.setMetatag(new HashSet<>(Arrays.asList(TagField.getText().split(" "))));
         an.setCreation(new Date());
         an.setLastmodification(new Date());
-        editannotation.Create(an);
+        editannotation.Create(an); 
+        String a;
+        //vertificar o proximo arquivo a ser criado
+        for(i = 1; ; i++) {            
+            a = "0" + i + ".txt";
+            try {
+                FileInputStream teste = new FileInputStream(a);
+                try {
+                    teste.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (FileNotFoundException ex) {
+                break;
+            }
+        }        
+        a = "0" + i + ".txt";
+        OutputStream os = null;
+        try {
+            os = new FileOutputStream(a);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        OutputStreamWriter osw = new OutputStreamWriter(os);
+        BufferedWriter bw = new BufferedWriter(osw);
+ 
+        try {
+            //Primeira linha titulo, segunda tags, terceira data inicial e 4 data de modificaçao
+            bw.write(an.getTitle());
+            bw.newLine();
+            bw.write(an.getMetatag().toString());            
+            bw.newLine();
+            bw.write(an.getCreation().toString());                  
+            bw.newLine();
+            bw.write(an.getLastmodification().toString());
+            bw.newLine();
+            bw.write(an.getText());                        
+        } catch (IOException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+     
+        try {
+            bw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
         JOptionPane.showMessageDialog(rootPane, "Anotação criada com sucesso.");
+        TitleField.setText(""); 
         TextArea.setText("");
         TagField.setText("");
         SaveButton.setEnabled(false);
