@@ -40,6 +40,7 @@ public class MainFrame extends javax.swing.JFrame {
         TagField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         TitleField = new javax.swing.JTextField();
+        ButtonFechar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         MainMenu = new javax.swing.JMenu();
         SearchMenu = new javax.swing.JMenuItem();
@@ -77,6 +78,13 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel2.setText("Título:");
 
+        ButtonFechar.setText("Fechar");
+        ButtonFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonFecharActionPerformed(evt);
+            }
+        });
+
         MainMenu.setText("Arquivo");
 
         SearchMenu.setText("Pesquisar");
@@ -110,17 +118,18 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane2)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(HeaderText)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(Version))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel1)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(TagField, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(SaveButton)))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(HeaderText)
+                                .addGap(18, 18, 18)
+                                .addComponent(Version)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(ButtonFechar))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(TagField, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(SaveButton))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -131,10 +140,12 @@ public class MainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(HeaderText)
-                    .addComponent(Version))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(HeaderText)
+                        .addComponent(Version))
+                    .addComponent(ButtonFechar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(TitleField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -181,8 +192,13 @@ public class MainFrame extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_ExitMenuActionPerformed
 
+    private void ButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonFecharActionPerformed
+       this.setVisible(false);
+    }//GEN-LAST:event_ButtonFecharActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ButtonFechar;
     private javax.swing.JMenuItem ExitMenu;
     private javax.swing.JLabel HeaderText;
     private javax.swing.JMenu MainMenu;
