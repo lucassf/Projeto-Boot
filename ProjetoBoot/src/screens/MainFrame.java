@@ -1,23 +1,28 @@
 package screens;
 
+import filters.*;
+import projetoboot.*;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
 import java.util.Date;
 import java.util.HashSet;
-import projetoboot.*;
 
 public class MainFrame extends javax.swing.JFrame {
 
     private final TextAreaFilter textareafilter;
-    private Annotation current;
+    private final FieldFilter fieldfilter;
     private EditAnnotation editannotation;
+    private final Search search;
 
     public MainFrame() {
         initComponents();
         textareafilter = new TextAreaFilter(50, 50);
         ((AbstractDocument) TextArea.getDocument()).setDocumentFilter(textareafilter);
+        fieldfilter = new FieldFilter(50);
+        ((AbstractDocument) TitleField.getDocument()).setDocumentFilter(fieldfilter);
         editannotation = new EditAnnotation();
+        search = new Search(editannotation.getAnnotations());
     }
 
     @SuppressWarnings("unchecked")
@@ -33,15 +38,19 @@ public class MainFrame extends javax.swing.JFrame {
         Version = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         TagField = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        TitleField = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
-        ExitMenu = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        MainMenu = new javax.swing.JMenu();
+        SearchMenu = new javax.swing.JMenuItem();
+        ExitMenu = new javax.swing.JMenuItem();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         TextArea.setColumns(20);
         TextArea.setRows(5);
@@ -66,12 +75,27 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel1.setText("Tags:");
 
-        ExitMenu.setText("Arquivo");
+        jLabel2.setText("Título:");
 
-        jMenuItem1.setText("Sair");
-        ExitMenu.add(jMenuItem1);
+        MainMenu.setText("Arquivo");
 
-        jMenuBar1.add(ExitMenu);
+        SearchMenu.setText("Pesquisar");
+        SearchMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SearchMenuActionPerformed(evt);
+            }
+        });
+        MainMenu.add(SearchMenu);
+
+        ExitMenu.setText("Sair");
+        ExitMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ExitMenuActionPerformed(evt);
+            }
+        });
+        MainMenu.add(ExitMenu);
+
+        jMenuBar1.add(MainMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -79,21 +103,28 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(HeaderText)
-                            .addGap(18, 18, 18)
-                            .addComponent(Version))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(TagField, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(SaveButton))))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane2)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(HeaderText)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(Version))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel1)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(TagField, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(SaveButton)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(TitleField)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -103,8 +134,12 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(HeaderText)
                     .addComponent(Version))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(TitleField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(SaveButton)
@@ -137,17 +172,29 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_TextAreaKeyReleased
 
+    private void SearchMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchMenuActionPerformed
+        new SearchDialog(this,true).setVisible(true);
+    }//GEN-LAST:event_SearchMenuActionPerformed
+
+    private void ExitMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitMenuActionPerformed
+        this.setVisible(false);
+        dispose();
+    }//GEN-LAST:event_ExitMenuActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu ExitMenu;
+    private javax.swing.JMenuItem ExitMenu;
     private javax.swing.JLabel HeaderText;
+    private javax.swing.JMenu MainMenu;
     private javax.swing.JButton SaveButton;
+    private javax.swing.JMenuItem SearchMenu;
     private javax.swing.JTextField TagField;
     private javax.swing.JTextArea TextArea;
+    private javax.swing.JTextField TitleField;
     private javax.swing.JLabel Version;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;

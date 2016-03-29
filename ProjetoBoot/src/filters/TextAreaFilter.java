@@ -1,4 +1,4 @@
-package screens;
+package filters;
 
 import java.awt.Toolkit;
 import javax.swing.text.AttributeSet;
