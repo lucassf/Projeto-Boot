@@ -1,11 +1,15 @@
 package screens;
 
 import filters.*;
+import java.awt.TextArea;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import projetoboot.*;
@@ -172,6 +176,19 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
+     /*   Annotation an = new Annotation();
+        an.setText(TextArea.getText());
+        an.setTitle(TitleField.getText());
+        an.setMetatag(new HashSet<>(Arrays.asList(TagField.getText().split(" "))));
+        an.setCreation(new Date());
+        an.setLastmodification(new Date());
+        EditAnnotation x = new EditAnnotation();
+        
+        JOptionPane.showMessageDialog(rootPane, "Anotação criada com sucesso.");
+        TitleField.setText(""); 
+        TextArea.setText("");
+        TagField.setText("");
+        SaveButton.setEnabled(false); */
         int q = 0;
         int i;
         Annotation an = new Annotation();
@@ -204,10 +221,12 @@ public class MainFrame extends javax.swing.JFrame {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         OutputStreamWriter osw = new OutputStreamWriter(os);
-        BufferedWriter bw = new BufferedWriter(osw);
- 
+        BufferedWriter bw = new BufferedWriter(osw); 
         try {
-            //Primeira linha titulo, segunda tags, terceira data inicial e 4 data de modificaçao
+            //nome do .txt
+            bw.write(a);
+            bw.newLine();
+            //segunda linha titulo, terceira tags, quarta data inicial e quinta data de modificaçao
             bw.write(an.getTitle());
             bw.newLine();
             bw.write(an.getMetatag().toString());            
@@ -219,18 +238,18 @@ public class MainFrame extends javax.swing.JFrame {
             bw.write(an.getText());                        
         } catch (IOException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-     
+        }     
+        
+        JOptionPane.showMessageDialog(rootPane, "Anotação criada com sucesso.");
+        TitleField.setText(""); 
+        TextArea.setText("");
         try {
             bw.close();
         } catch (IOException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        JOptionPane.showMessageDialog(rootPane, "Anotação criada com sucesso.");
-        TitleField.setText(""); 
-        TextArea.setText("");
-        TagField.setText("");
-        SaveButton.setEnabled(false);
+        TagField.setText("");        
+        SaveButton.setEnabled(false);         
     }//GEN-LAST:event_SaveButtonActionPerformed
 
     private void TextAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextAreaKeyReleased
