@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package screens;
+import projetoboot.*;
 
 /**
  *
@@ -14,10 +15,11 @@ public class NovoPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form NovoPrincipal
      */
+    
     public NovoPrincipal() {
         initComponents();
     }
-
+    EditAnnotation v = new EditAnnotation();
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -92,7 +94,7 @@ public class NovoPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void NovoAnotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NovoAnotActionPerformed
-        MainFrame s = new MainFrame();
+        MainFrame s = new MainFrame(v);
         s.setVisible(true);
     }//GEN-LAST:event_NovoAnotActionPerformed
 
