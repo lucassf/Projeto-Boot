@@ -28,13 +28,13 @@ public class MainFrame extends javax.swing.JFrame {
     private EditAnnotation editannotation;
     private final Search search;
 
-    public MainFrame() {
+    public MainFrame(EditAnnotation x) {
         initComponents();
         textareafilter = new TextAreaFilter(50, 50);
         ((AbstractDocument) TextArea.getDocument()).setDocumentFilter(textareafilter);
         fieldfilter = new FieldFilter(50);
         ((AbstractDocument) TitleField.getDocument()).setDocumentFilter(fieldfilter);
-        editannotation = new EditAnnotation();
+        editannotation = x;
         search = new Search(editannotation.getAnnotations());
     }
 
@@ -176,80 +176,20 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
-     /*   Annotation an = new Annotation();
-        an.setText(TextArea.getText());
-        an.setTitle(TitleField.getText());
-        an.setMetatag(new HashSet<>(Arrays.asList(TagField.getText().split(" "))));
-        an.setCreation(new Date());
-        an.setLastmodification(new Date());
-        EditAnnotation x = new EditAnnotation();
-        
-        JOptionPane.showMessageDialog(rootPane, "Anotação criada com sucesso.");
-        TitleField.setText(""); 
-        TextArea.setText("");
-        TagField.setText("");
-        SaveButton.setEnabled(false); */
-        int q = 0;
-        int i;
         Annotation an = new Annotation();
         an.setText(TextArea.getText());
         an.setTitle(TitleField.getText());
         an.setMetatag(new HashSet<>(Arrays.asList(TagField.getText().split(" "))));
         an.setCreation(new Date());
         an.setLastmodification(new Date());
-        editannotation.Create(an); 
-        String a;
-        //vertificar o proximo arquivo a ser criado
-        for(i = 1; ; i++) {            
-            a = "0" + i + ".txt";
-            try {
-                FileInputStream teste = new FileInputStream(a);
-                try {
-                    teste.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } catch (FileNotFoundException ex) {
-                break;
-            }
-        }        
-        a = "0" + i + ".txt";
-        OutputStream os = null;
-        try {
-            os = new FileOutputStream(a);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        OutputStreamWriter osw = new OutputStreamWriter(os);
-        BufferedWriter bw = new BufferedWriter(osw); 
-        try {
-            //nome do .txt
-            bw.write(a);
-            bw.newLine();
-            //segunda linha titulo, terceira tags, quarta data inicial e quinta data de modificaçao
-            bw.write(an.getTitle());
-            bw.newLine();
-            bw.write(an.getMetatag().toString());            
-            bw.newLine();
-            bw.write(an.getCreation().toString());                  
-            bw.newLine();
-            bw.write(an.getLastmodification().toString());
-            bw.newLine();
-            bw.write(an.getText());                        
-        } catch (IOException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }     
+        editannotation.Create(an);
         
         JOptionPane.showMessageDialog(rootPane, "Anotação criada com sucesso.");
         TitleField.setText(""); 
         TextArea.setText("");
-        try {
-            bw.close();
-        } catch (IOException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        TagField.setText("");        
-        SaveButton.setEnabled(false);         
+        TagField.setText("");
+        SaveButton.setEnabled(false); 
+              
     }//GEN-LAST:event_SaveButtonActionPerformed
 
     private void TextAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextAreaKeyReleased
