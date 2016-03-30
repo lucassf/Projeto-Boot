@@ -4,17 +4,30 @@ import java.util.Date;
 import java.util.Set;
 import java.util.Comparator;
 
-enum SortCriteria{
-    TITLE,CREATION,LASTMODIFICATION
-};
-
 public class Annotation{
+    
+    public enum SortCriteria{
+    TITLE,CREATION,LASTMODIFICATION
+    };
+    
     private String title;
     private String text;
     private Date creation;
     private Date lastmodification;
     private Set<String> metatag;
-
+    
+    public Annotation(){    
+    }
+    
+    public Annotation(String title,String text,Date creation,Date lastmodification,
+            Set<String> metatag){
+        this.title=title;
+        this.text=text;
+        this.creation=creation;
+        this.lastmodification=lastmodification;
+        this.metatag=metatag;
+    }
+    
     public String getTitle() {
         return title;
     }
@@ -53,6 +66,14 @@ public class Annotation{
 
     public void setMetatag(Set<String> metatag) {
         this.metatag = metatag;
+    }
+    
+    public boolean equals(Annotation an){
+        boolean ret;
+        ret = an.getCreation().equals(creation)&an.getLastmodification().equals(lastmodification)
+                &an.getTitle().equals(title)&an.getMetatag().equals(metatag)&
+                an.getText().equals(text);
+        return ret;
     }
 
     public static Comparator<Annotation> NameComparison = new Comparator<Annotation>(){

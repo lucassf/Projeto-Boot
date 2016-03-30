@@ -12,6 +12,7 @@ public class EditAnnotation {
     }
     
     public void Create(Annotation an){
+        an.getMetatag().remove("");
         allannotations.add(an);
     }
     
@@ -19,8 +20,8 @@ public class EditAnnotation {
         
     }
     
-    public void Delete(){
-        
+    public void Delete(Annotation an){
+        allannotations.remove(an);
     }
     
     public Vector<Annotation> getAnnotations(){
