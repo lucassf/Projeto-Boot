@@ -30,7 +30,7 @@ public class EditAnnotation {
         String a;
         //vertificar o proximo arquivo a ser criado
         for(i = 1; ; i++) {            
-            a = "0" + i + ".txt";
+            a = i + ".txt";
             try {
                 FileInputStream teste = new FileInputStream(a);
                 try {
@@ -42,7 +42,7 @@ public class EditAnnotation {
                 break;
             }
         }        
-        a = "0" + i + ".txt";
+        a = i + ".txt";
         OutputStream os = null;
         try {
             os = new FileOutputStream(a);
