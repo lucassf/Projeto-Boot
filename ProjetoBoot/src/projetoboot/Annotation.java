@@ -9,12 +9,19 @@ enum SortCriteria{
 };
 
 public class Annotation{
+    private String arquivo; //nome do .txt
     private String title;
     private String text;
     private Date creation;
     private Date lastmodification;
     private Set<String> metatag;
 
+    public String getArquivo(){
+        return arquivo;
+    }
+    public void setArquivo(String x){
+        this.arquivo = x;
+    }
     public String getTitle() {
         return title;
     }
