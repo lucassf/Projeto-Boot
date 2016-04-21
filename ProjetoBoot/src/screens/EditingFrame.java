@@ -1,34 +1,21 @@
 package screens;
 
 import filters.*;
-import java.awt.TextArea;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import projetoboot.*;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class MainFrame extends javax.swing.JFrame {
+public class EditingFrame extends javax.swing.JFrame {
 
     private final TextAreaFilter textareafilter;
     private final FieldFilter fieldfilter;
     private EditAnnotation editannotation;
     private final Search search;
 
-    public MainFrame(EditAnnotation x) {
+    public EditingFrame(EditAnnotation x) {
         initComponents();
         textareafilter = new TextAreaFilter(50, 50);
         ((AbstractDocument) TextArea.getDocument()).setDocumentFilter(textareafilter);

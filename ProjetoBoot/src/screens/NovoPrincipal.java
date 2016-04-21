@@ -94,7 +94,7 @@ public class NovoPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void NovoAnotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NovoAnotActionPerformed
-        MainFrame s = new MainFrame(v);
+        EditingFrame s = new EditingFrame(v);
         s.setVisible(true);
     }//GEN-LAST:event_NovoAnotActionPerformed
 

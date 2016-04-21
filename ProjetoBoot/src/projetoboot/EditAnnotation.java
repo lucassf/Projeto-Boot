@@ -7,13 +7,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import screens.MainFrame;
+import screens.EditingFrame;
 public class EditAnnotation {
     
     private Vector<Annotation> allannotations;
@@ -36,7 +33,7 @@ public class EditAnnotation {
                 try {
                     teste.close();
                 } catch (IOException ex) {
-                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(EditingFrame.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } catch (FileNotFoundException ex) {
                 break;
@@ -47,7 +44,7 @@ public class EditAnnotation {
         try {
             os = new FileOutputStream(a);
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EditingFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         OutputStreamWriter osw = new OutputStreamWriter(os);
         BufferedWriter bw = new BufferedWriter(osw); 
@@ -66,14 +63,14 @@ public class EditAnnotation {
             bw.newLine();
             bw.write(an.getText());                        
         } catch (IOException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EditingFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         
         try {
             bw.close();
         } catch (IOException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EditingFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
