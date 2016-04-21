@@ -11,6 +11,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import screens.EditingFrame;
+import screens.MainFrame;
 public class EditAnnotation {
     
     private Vector<Annotation> allannotations;
@@ -74,8 +75,47 @@ public class EditAnnotation {
             Logger.getLogger(EditingFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void Edit(){
+    //old: annotation a ser mudada
+    //new: a nova anotation apos a edicao
+    public void Edit(Annotation old, Annotation nova){
+        String a;
+        a = old.getFile();
+        File file = new File(a);
+        file.delete();
+        allannotations.remove(old);           
+        OutputStream os = null;
+        try {
+            os = new FileOutputStream(a);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        OutputStreamWriter osw = new OutputStreamWriter(os);
+        BufferedWriter bw = new BufferedWriter(osw); 
+        try {
+            //nome do .txt
+            bw.write(a);
+            bw.newLine();
+            //segunda linha titulo, terceira tags, quarta data inicial e quinta data de modificaçao
+            bw.write(nova.getTitle());
+            bw.newLine();
+            bw.write(nova.getMetatag().toString());            
+            bw.newLine();
+            bw.write(nova.getCreation().toString());                  
+            bw.newLine();
+            bw.write(nova.getLastmodification().toString());
+            bw.newLine();
+            bw.write(nova.getText());                        
+        } catch (IOException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        try {
+            bw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }      
+        allannotations.add(nova);         
         
     }
     //deleta um arquivo, deletando o .txt e removendo o annotation do vetor
