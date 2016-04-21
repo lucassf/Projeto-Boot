@@ -21,6 +21,7 @@ public class EditAnnotation {
     }
     //cria um .txt de an e adiciona an ao vetor allannotations
     public void Create(Annotation an){
+        an.getMetatag().remove("");
         allannotations.add(an);
         int q = 0;
         int i;
