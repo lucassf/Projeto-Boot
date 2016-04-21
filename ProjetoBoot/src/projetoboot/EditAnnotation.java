@@ -26,7 +26,7 @@ public class EditAnnotation {
         int q = 0;
         int i;
         String a;
-        //vertificar o proximo arquivo a ser criado
+        //verificar o proximo arquivo a ser criado
         for(i = 1; ; i++) {            
             a = i + ".txt";
             try {
@@ -83,7 +83,7 @@ public class EditAnnotation {
     //obs: ainda nao foi testado
     public void Delete(Annotation an){
         allannotations.remove(an);
-        File file = new File(an.getArquivo());     
+        File file = new File(an.getFile());     
         file.delete();
       
     }

@@ -41,10 +41,6 @@ public class EditingFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         TitleField = new javax.swing.JTextField();
         ButtonFechar = new javax.swing.JButton();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        MainMenu = new javax.swing.JMenu();
-        SearchMenu = new javax.swing.JMenuItem();
-        ExitMenu = new javax.swing.JMenuItem();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -84,28 +80,6 @@ public class EditingFrame extends javax.swing.JFrame {
                 ButtonFecharActionPerformed(evt);
             }
         });
-
-        MainMenu.setText("Arquivo");
-
-        SearchMenu.setText("Pesquisar");
-        SearchMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SearchMenuActionPerformed(evt);
-            }
-        });
-        MainMenu.add(SearchMenu);
-
-        ExitMenu.setText("Sair");
-        ExitMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ExitMenuActionPerformed(evt);
-            }
-        });
-        MainMenu.add(ExitMenu);
-
-        jMenuBar1.add(MainMenu);
-
-        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -187,15 +161,6 @@ public class EditingFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_TextAreaKeyReleased
 
-    private void SearchMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchMenuActionPerformed
-        new SearchDialog(this,true).setVisible(true);
-    }//GEN-LAST:event_SearchMenuActionPerformed
-
-    private void ExitMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitMenuActionPerformed
-        this.setVisible(false);
-        dispose();
-    }//GEN-LAST:event_ExitMenuActionPerformed
-
     private void ButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonFecharActionPerformed
        this.setVisible(false);
     }//GEN-LAST:event_ButtonFecharActionPerformed
@@ -203,18 +168,14 @@ public class EditingFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ButtonFechar;
-    private javax.swing.JMenuItem ExitMenu;
     private javax.swing.JLabel HeaderText;
-    private javax.swing.JMenu MainMenu;
     private javax.swing.JButton SaveButton;
-    private javax.swing.JMenuItem SearchMenu;
     private javax.swing.JTextField TagField;
     private javax.swing.JTextArea TextArea;
     private javax.swing.JTextField TitleField;
     private javax.swing.JLabel Version;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;

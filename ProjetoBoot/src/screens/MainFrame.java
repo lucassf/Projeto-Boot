@@ -21,7 +21,7 @@ public class MainFrame extends javax.swing.JFrame {
     private final SimpleDateFormat dateformat;
     private final String versioncontrolmessage;
     private final EditAnnotation editannotation;
-    Vector<Annotation> an;
+    private Vector<Annotation> an;
 
     public MainFrame() {
         initComponents();

@@ -5,24 +5,15 @@ import java.util.Set;
 import java.util.Comparator;
 
 public class Annotation{
-    private String arquivo; //nome do .txt
-    
     public enum SortCriteria{
     TITLE,CREATION,LASTMODIFICATION
     };
-    
+    private String file; //nome do .txt
     private String title;
     private String text;
     private Date creation;
     private Date lastmodification;
     private Set<String> metatag;
-
-    public String getArquivo(){
-        return arquivo;
-    }
-    public void setArquivo(String x){
-        this.arquivo = x;
-    }
     
     public Annotation(){    
     }
@@ -34,6 +25,13 @@ public class Annotation{
         this.creation=creation;
         this.lastmodification=lastmodification;
         this.metatag=metatag;
+    }
+    
+    public String getFile(){
+        return file;
+    }
+    public void setFile(String x){
+        this.file = x;
     }
     
     public String getTitle() {
