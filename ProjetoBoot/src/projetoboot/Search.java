@@ -8,18 +8,12 @@ import java.util.Set;
 
 public class Search {
 
-    private ArrayList<Annotation> results;
     private Vector<Annotation> allan;
     private final SimpleDateFormat dateformat;
 
     public Search(Vector<Annotation> allan) {
-        results = new ArrayList<>();
         this.allan = allan;
         dateformat = new SimpleDateFormat("yyyy MM dd");
-    }
-    
-    public ArrayList<Annotation> GetResults(){
-        return results;
     }
 
     private boolean StringMatch(String s1, String s2) {
@@ -45,9 +39,9 @@ public class Search {
         return ret;
     }
 
-    public int Search(String name, Set<String> tags, int[] datecreation, int[] lastupdate,
+    public ArrayList<Annotation> Search(String name, Set<String> tags, int[] datecreation, int[] lastupdate,
             Annotation.SortCriteria sortcriteria) {
-        results.clear();
+        ArrayList<Annotation> results = new ArrayList<>();
 
         tags.remove("");
         
@@ -66,7 +60,9 @@ public class Search {
             results.sort(Annotation.CreationComparison);
         } else if (sortcriteria == Annotation.SortCriteria.LASTMODIFICATION) {
             results.sort(Annotation.UpdateComparison);
+        }else if (sortcriteria == Annotation.SortCriteria.ID){
+            results.sort(Annotation.IdComparison);
         }
-        return results.size();
+        return results;
     }
 }

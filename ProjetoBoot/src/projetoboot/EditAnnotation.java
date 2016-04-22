@@ -41,6 +41,7 @@ public class EditAnnotation {
             }
         }        
         a = i + ".txt";
+        an.setId(i);
         OutputStream os = null;
         try {
             os = new FileOutputStream(a);
