@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -19,6 +20,7 @@ public class EditAnnotation {
         Annotation annot;
         annot = new Annotation();
         allannotations = new Vector<>();
+        allannotations = null;        
         FilenameFilter filter = new FilenameFilter() {
           public boolean accept(File dir, String name) {
              return name.endsWith(".txt");             
@@ -33,8 +35,12 @@ public class EditAnnotation {
                 reader = new FileReader(file);
                 BufferedReader br = new BufferedReader(reader);
                 annot.setFile(br.readLine());
-                annot.setTitle(br.readLine());                
-                annot.setMetatag((Set<String>)Arrays.asList(br.readLine())); //PROBLEMA!!!!!
+                annot.setTitle(br.readLine());
+                String tag = br.readLine();
+                String[] tags; 
+                tags = tag.split(",");
+                Set<String> meta = new HashSet<String>(Arrays.asList(tags));
+                annot.setMetatag(meta);
                 DateFormat format = new SimpleDateFormat("E MMM dd HH:mm:ss yyyy");
                 Date creation = null;
                 try {
@@ -105,7 +111,9 @@ public class EditAnnotation {
             bw.newLine();
             bw.write(an.getMetatag().toString());            
             bw.newLine();
-            bw.write(an.getCreation().toString());                  
+            String tag = an.getCreation().toString();
+            tag = tag.substring(1, tag.length() -1);
+            bw.write(tag);                  
             bw.newLine();
             bw.write(an.getLastmodification().toString());
             bw.newLine();
