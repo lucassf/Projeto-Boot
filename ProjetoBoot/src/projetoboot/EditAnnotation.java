@@ -1,12 +1,11 @@
 package projetoboot;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Set;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,9 +15,56 @@ public class EditAnnotation {
     
     private Vector<Annotation> allannotations;
     
-    public EditAnnotation(){
+    public EditAnnotation() throws IOException{
+        Annotation annot;
+        annot = new Annotation();
         allannotations = new Vector<>();
-        
+        FilenameFilter filter = new FilenameFilter() {
+          public boolean accept(File dir, String name) {
+             return name.endsWith(".txt");             
+          }
+        };        
+        File folder = new File("C:/Users/G1511NEW/Desktop/ITA/CES-22/Lab/Projeto-Boot/ProjetoBoot");
+        File[] listOfFiles = folder.listFiles(filter);
+        for (int i = 0; i < listOfFiles.length; i++) {
+            File file = listOfFiles[i];
+            FileReader reader = null;
+            try {
+                reader = new FileReader(file);
+                BufferedReader br = new BufferedReader(reader);
+                annot.setFile(br.readLine());
+                annot.setTitle(br.readLine());                
+                annot.setMetatag((Set<String>)Arrays.asList(br.readLine())); //PROBLEMA!!!!!
+                DateFormat format = new SimpleDateFormat("E MMM dd HH:mm:ss yyyy");
+                Date creation = null;
+                try {
+                    creation = format.parse(br.readLine());
+                } catch (ParseException ex) {
+                    System.out.println("Error afasdf");
+                    Logger.getLogger(EditAnnotation.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                annot.setCreation(creation);
+                Date lastmodification = null;
+                try {
+                    lastmodification = format.parse(br.readLine());
+                } catch (ParseException ex) {
+                    System.out.println("Error afasdf");
+                    Logger.getLogger(EditAnnotation.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                annot.setLastmodification(lastmodification);
+                String text = null;
+                int c = br.read();                
+                while (c != -1){
+                    text = text + (char)c;
+                    c = br.read();
+                }                    
+                annot.setText(text);
+                allannotations.add(annot);
+            } catch (FileNotFoundException ex) {
+                System.out.println("Error afasdf");
+               // Logger.getLogger(EditAnnotation.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+        }
     }
     //cria um .txt de an e adiciona an ao vetor allannotations
     public void Create(Annotation an){
