@@ -18,7 +18,6 @@ public class EditAnnotation {
     
     public EditAnnotation() throws IOException{
         Annotation annot;
-        annot = new Annotation();
         allannotations = new Vector<>();
         FilenameFilter filter = new FilenameFilter() {
           public boolean accept(File dir, String name) {
@@ -27,29 +26,29 @@ public class EditAnnotation {
         };        
         File folder = new File("/C:/Users/G1511NEW/Desktop/ITA/CES-22/Lab/Projeto-Boot/ProjetoBoot");
         File[] listOfFiles = folder.listFiles(filter);
-        for (int i = 0; i < listOfFiles.length; i++) {
-            File file = listOfFiles[i];
-            FileReader reader = null;
-            try {
+        FileReader reader;
+        File file;
+        for (int i = 0; i < listOfFiles.length; i++) {            
+            annot = new Annotation();
+            file = listOfFiles[i];            
+            reader = null;
+            try {                
                 reader = new FileReader(file);
                 BufferedReader br = new BufferedReader(reader);
                 annot.setFile(br.readLine());
-           //     System.out.println(annot.getFile());
-                annot.setTitle(br.readLine());                
-           //     System.out.println(annot.getTitle());
+                annot.setTitle(br.readLine());        
                 String tag = br.readLine();
                 String[] tags; 
                 tags = tag.split(",");
                 Set<String> meta = new HashSet<String>(Arrays.asList(tags));
-                annot.setMetatag(meta);
-             //   System.out.println(annot.getMetatag().toString());
+                annot.setMetatag(meta);                     
                 SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
                 Date creation = null;
                 try {
                     creation = format.parse(br.readLine());
                 } catch (ParseException ex) {
                     System.out.println("Error 1");
-                    Logger.getLogger(EditAnnotation.class.getName()).log(Level.SEVERE, null, ex);
+                    //Logger.getLogger(EditAnnotation.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 annot.setCreation(creation);
                 Date lastmodification = null;
@@ -57,22 +56,24 @@ public class EditAnnotation {
                     lastmodification = format.parse(br.readLine());
                 } catch (ParseException ex) {
                     System.out.println("Error 2");
-                    Logger.getLogger(EditAnnotation.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                    //Logger.getLogger(EditAnnotation.class.getName()).log(Level.SEVERE, null, ex);
+                }  
                 annot.setLastmodification(lastmodification);
                 String text = "";
                 int c = br.read();                
                 while (c != -1){
                     text = text + (char)c;
                     c = br.read();
-                }                    
-                annot.setText(text);
-                allannotations.add(annot);
+                }
+                annot.setText(text);  
+                allannotations.addElement(annot);                                                          
+                
+                reader.close();
             } catch (FileNotFoundException ex) {
                 System.out.println("Error 3");
                // Logger.getLogger(EditAnnotation.class.getName()).log(Level.SEVERE, null, ex);
             } 
-            reader.close();
+            
         }
     }
     //cria um .txt de an e adiciona an ao vetor allannotations
@@ -181,7 +182,8 @@ public class EditAnnotation {
     //obs: ainda nao foi testado
     public void Delete(Annotation an){
         allannotations.remove(an);
-        File file = new File(an.getFile());     
+        File file = new File(an.getFile()); 
+     //   System.out.println("teste");
         file.delete();
       
     }

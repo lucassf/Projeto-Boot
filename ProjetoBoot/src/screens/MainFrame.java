@@ -31,8 +31,8 @@ public class MainFrame extends javax.swing.JFrame {
                 setDocumentFilter(new FieldFilter(100));
         ((AbstractDocument) TagsField.getDocument()).
                 setDocumentFilter(new FieldFilter(100));
-        editannotation = new EditAnnotation();
-        an = editannotation.getAnnotations();
+        editannotation = new EditAnnotation();        
+        System.out.print(editannotation.getAnnotations().get(1).getTitle());
 
         //LUCAS: VERIFICAR SE EU NAO APAGUEI ALGO A MAIS
 
