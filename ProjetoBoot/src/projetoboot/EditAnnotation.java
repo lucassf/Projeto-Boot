@@ -80,7 +80,7 @@ public class EditAnnotation {
     public void Create(Annotation an){
         an.getMetatag().remove("");
         allannotations.add(an);
-        int q = 0;
+     //   System.out.println(allannotations.firstElement().getTitle());
         int i;
         String a;
         //verificar o proximo arquivo a ser criado
@@ -183,7 +183,7 @@ public class EditAnnotation {
     public void Delete(Annotation an){
         allannotations.remove(an);
         File file = new File(an.getFile()); 
-     //   System.out.println("teste");
+        System.out.println(an.getTitle());
         file.delete();
       
     }

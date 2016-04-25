@@ -1,6 +1,0 @@
-2.txt
-tit2
-tag1, tag2, tag3
-Mon Apr 25 19:31:28 BRT 2016
-Mon Apr 25 19:31:28 BRT 2016
-text2

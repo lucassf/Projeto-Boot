@@ -32,10 +32,9 @@ public class MainFrame extends javax.swing.JFrame {
         ((AbstractDocument) TagsField.getDocument()).
                 setDocumentFilter(new FieldFilter(100));
         editannotation = new EditAnnotation();        
-        System.out.print(editannotation.getAnnotations().get(1).getTitle());
-
+        
         //LUCAS: VERIFICAR SE EU NAO APAGUEI ALGO A MAIS
-
+        
         search = new Search(editannotation.getAnnotations());
         dateformat = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
         versioncontrolmessage = "Bloco de anotações\nV. 1.0";
@@ -319,7 +318,8 @@ public class MainFrame extends javax.swing.JFrame {
                     new HashSet<>(Arrays.asList(TagsField.getText().split(" "))),
                     creationcalendar, updatecalendar, Annotation.SortCriteria.LASTMODIFICATION);
             message = found + (found != 1 ? " anotações encontradas" : " anotação encontrada");
-        }
+        }        
+       // System.out.println(editannotation.getAnnotations().firstElement().getTitle());
         ArrayList<Annotation> results = search.GetResults();
         DefaultTableModel model = (DefaultTableModel) ResultsTable.getModel();
         model.setRowCount(0);
