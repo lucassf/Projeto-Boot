@@ -10,7 +10,6 @@ import java.util.Set;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import screens.EditingFrame;
 import screens.MainFrame;
 public class EditAnnotation {
     
@@ -87,7 +86,7 @@ public class EditAnnotation {
                 try {
                     teste.close();
                 } catch (IOException ex) {
-                    Logger.getLogger(EditingFrame.class.getName()).log(Level.SEVERE, null, ex);
+                 //   Logger.getLogger(EditingFrame.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } catch (FileNotFoundException ex) {
                 break;
@@ -98,7 +97,7 @@ public class EditAnnotation {
         try {
             os = new FileOutputStream(a);
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(EditingFrame.class.getName()).log(Level.SEVERE, null, ex);
+          //  Logger.getLogger(EditingFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         OutputStreamWriter osw = new OutputStreamWriter(os);
         BufferedWriter bw = new BufferedWriter(osw); 
@@ -119,14 +118,14 @@ public class EditAnnotation {
             bw.newLine();
             bw.write(an.getText());                        
         } catch (IOException ex) {
-            Logger.getLogger(EditingFrame.class.getName()).log(Level.SEVERE, null, ex);
+           // Logger.getLogger(EditingFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         
         try {
             bw.close();
         } catch (IOException ex) {
-            Logger.getLogger(EditingFrame.class.getName()).log(Level.SEVERE, null, ex);
+           // Logger.getLogger(EditingFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     //old: annotation a ser mudada

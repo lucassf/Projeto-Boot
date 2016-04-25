@@ -1,6 +1,7 @@
 package screens;
 
 import filters.*;
+import java.io.IOException;
 import projetoboot.*;
 import java.time.Year;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class MainFrame extends javax.swing.JFrame {
     private final EditAnnotation editannotation;
     private Vector<Annotation> an;
 
-    public MainFrame() {
+    public MainFrame() throws IOException {
         initComponents();
         setComboBoxes();
         ((AbstractDocument) TitleField.getDocument()).
@@ -33,14 +34,7 @@ public class MainFrame extends javax.swing.JFrame {
         editannotation = new EditAnnotation();
         an = editannotation.getAnnotations();
 
-        an.addElement(new Annotation("Ultimo dia", "A noite\nsombria e escura\n",
-                new Date(), new Date(), new HashSet<>(Arrays.asList("doc inutil test test doc".split(" ")))));
-        an.addElement(new Annotation("Merchandise", "Denis\n\n\n\nArrot",
-                new GregorianCalendar(2016, 2, 30).getTime(), new GregorianCalendar(2016, 2, 27).getTime(),
-                new HashSet<>(Arrays.asList("doc sup test test".split(" ")))));
-        an.addElement(new Annotation("Sentença", "Se fosse tão facil não seria impossível",
-                new GregorianCalendar(2016, 2, 27).getTime(), new GregorianCalendar(2016, 3, 2).getTime(),
-                new HashSet<>(Arrays.asList("".split(" ")))));
+        //LUCAS: VERIFICAR SE EU NAO APAGUEI ALGO A MAIS
 
         search = new Search(editannotation.getAnnotations());
         dateformat = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
@@ -353,7 +347,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void EditButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditButtonActionPerformed
         new EditionDialog(this, true, search.GetResults().
-                get(ResultsTable.getSelectedRow())).setVisible(true);
+                get(ResultsTable.getSelectedRow()), editannotation).setVisible(true);
     }//GEN-LAST:event_EditButtonActionPerformed
 
     private void DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteButtonActionPerformed
@@ -392,16 +386,16 @@ public class MainFrame extends javax.swing.JFrame {
         }
         if (evt.getClickCount() == 2 && evt.getButton() == evt.BUTTON1 && row >= 0) {
             new EditionDialog(this, true, search.GetResults().
-                    get(ResultsTable.getSelectedRow())).setVisible(true);
+                    get(ResultsTable.getSelectedRow()), editannotation).setVisible(true);
         }
     }//GEN-LAST:event_ResultsTableMousePressed
 
     private void NewMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewMenuItemActionPerformed
-        new EditionDialog(this, true).setVisible(true);
+        new EditionDialog(this, true, editannotation).setVisible(true);
     }//GEN-LAST:event_NewMenuItemActionPerformed
 
     private void NewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewButtonActionPerformed
-        new EditionDialog(this, true).setVisible(true);
+        new EditionDialog(this, true, editannotation).setVisible(true);
     }//GEN-LAST:event_NewButtonActionPerformed
 
     private void ResetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetButtonActionPerformed

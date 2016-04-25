@@ -18,21 +18,17 @@ public class EditionDialog extends javax.swing.JDialog {
     private EditAnnotation editannotation;
     private Annotation anot;
 
-    public EditionDialog(java.awt.Frame parent, boolean modal) {
+    public EditionDialog(java.awt.Frame parent, boolean modal, EditAnnotation editanot) {
         super(parent, modal);
         initComponents();
         textareafilter = new TextAreaFilter(50, 50);
         ((AbstractDocument) TextArea.getDocument()).setDocumentFilter(textareafilter);
         fieldfilter = new FieldFilter(50);
-        ((AbstractDocument) TitleField.getDocument()).setDocumentFilter(fieldfilter);
-        try {
-            editannotation = new EditAnnotation();
-        } catch (IOException ex) {
-            Logger.getLogger(EditionDialog.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ((AbstractDocument) TitleField.getDocument()).setDocumentFilter(fieldfilter);   
+        editannotation = editanot;
     }
     
-    public EditionDialog(java.awt.Frame parent, boolean modal,Annotation an) {        
+    public EditionDialog(java.awt.Frame parent, boolean modal,Annotation an, EditAnnotation editanot) {        
         super(parent, modal);
         anot = an;
         initComponents();
@@ -45,11 +41,7 @@ public class EditionDialog extends javax.swing.JDialog {
         ((AbstractDocument) TextArea.getDocument()).setDocumentFilter(textareafilter);
         fieldfilter = new FieldFilter(50);
         ((AbstractDocument) TitleField.getDocument()).setDocumentFilter(fieldfilter);
-        try {
-            editannotation = new EditAnnotation();
-        } catch (IOException ex) {
-            Logger.getLogger(EditionDialog.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        editannotation = editanot;
     }
 
     @SuppressWarnings("unchecked")
