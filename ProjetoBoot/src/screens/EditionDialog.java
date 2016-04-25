@@ -1,18 +1,22 @@
 package screens;
 
 import filters.*;
+import java.io.IOException;
 import projetoboot.*;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class EditionDialog extends javax.swing.JDialog {
 
     private final TextAreaFilter textareafilter;
     private final FieldFilter fieldfilter;
     private EditAnnotation editannotation;
+    private Annotation anot;
 
     public EditionDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -21,11 +25,16 @@ public class EditionDialog extends javax.swing.JDialog {
         ((AbstractDocument) TextArea.getDocument()).setDocumentFilter(textareafilter);
         fieldfilter = new FieldFilter(50);
         ((AbstractDocument) TitleField.getDocument()).setDocumentFilter(fieldfilter);
-        editannotation = new EditAnnotation();
+        try {
+            editannotation = new EditAnnotation();
+        } catch (IOException ex) {
+            Logger.getLogger(EditionDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
-    public EditionDialog(java.awt.Frame parent, boolean modal,Annotation an) {
+    public EditionDialog(java.awt.Frame parent, boolean modal,Annotation an) {        
         super(parent, modal);
+        anot = an;
         initComponents();
         TextArea.setText(an.getText());
         TitleField.setText(an.getTitle());
@@ -36,7 +45,11 @@ public class EditionDialog extends javax.swing.JDialog {
         ((AbstractDocument) TextArea.getDocument()).setDocumentFilter(textareafilter);
         fieldfilter = new FieldFilter(50);
         ((AbstractDocument) TitleField.getDocument()).setDocumentFilter(fieldfilter);
-        editannotation = new EditAnnotation();
+        try {
+            editannotation = new EditAnnotation();
+        } catch (IOException ex) {
+            Logger.getLogger(EditionDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -85,7 +98,19 @@ public class EditionDialog extends javax.swing.JDialog {
 
         jLabel1.setText("Tags:");
 
+        TagField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TagFieldActionPerformed(evt);
+            }
+        });
+
         jLabel2.setText("Título:");
+
+        TitleField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TitleFieldActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -141,13 +166,14 @@ public class EditionDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ActionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActionButtonActionPerformed
-        /*Annotation an = new Annotation(TitleField.getText(),TextArea.getText(),
-        new Date(),new Date(),new HashSet<>(Arrays.asList(TagField.getText().split(" "))));
-        editannotation.Create(an);
-        JOptionPane.showMessageDialog(rootPane, "Anotação criada com sucesso.");
+        Annotation nova = new Annotation(TitleField.getText(),TextArea.getText(),
+        anot.getCreation() ,new Date(), new HashSet<>(Arrays.asList(TagField.getText().split(" "))));
+        JOptionPane.showMessageDialog(rootPane, "Anotação editada com sucesso.");
+        editannotation.Edit(anot, nova);
+        TitleField.setText("");
         TextArea.setText("");
         TagField.setText("");
-        ActionButton.setEnabled(false);*/
+        ActionButton.setEnabled(false);
     }//GEN-LAST:event_ActionButtonActionPerformed
 
     private void TextAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextAreaKeyReleased
@@ -157,6 +183,14 @@ public class EditionDialog extends javax.swing.JDialog {
             ActionButton.setEnabled(false);
         }*/
     }//GEN-LAST:event_TextAreaKeyReleased
+
+    private void TitleFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TitleFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TitleFieldActionPerformed
+
+    private void TagFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TagFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TagFieldActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
