@@ -22,7 +22,7 @@ public class ResultsTableModel extends AbstractTableModel {
     private final SimpleDateFormat dateformat;
 
     public ResultsTableModel() {
-        dateformat = new SimpleDateFormat("yyyy/MM/dd - HH:mm:ss");
+        dateformat = new SimpleDateFormat(Functions.getDateFormat());
         annotations = new ArrayList();
     }
 

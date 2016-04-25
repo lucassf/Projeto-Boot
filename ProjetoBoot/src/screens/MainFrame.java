@@ -1,6 +1,7 @@
 package screens;
 
 import filters.*;
+import java.io.IOException;
 import projetoboot.*;
 import java.time.Year;
 import java.util.ArrayList;
@@ -10,8 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AbstractDocument;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 public class MainFrame extends javax.swing.JFrame {
@@ -22,8 +22,10 @@ public class MainFrame extends javax.swing.JFrame {
     private final ResultsTableModel tablemodel;
     Vector<Annotation> an;
 
-    public MainFrame() {
-        tablemodel = new ResultsTableModel();
+    public MainFrame() throws IOException{
+        // Cria uma instância de EditAnnotation
+        editannotation = new EditAnnotation();
+        
         initComponents();
         ResultsTable.setAutoCreateRowSorter(true);
         setComboBoxes();
@@ -31,25 +33,17 @@ public class MainFrame extends javax.swing.JFrame {
                 setDocumentFilter(new FieldFilter(100));
         ((AbstractDocument) TagsField.getDocument()).
                 setDocumentFilter(new FieldFilter(100));
-        editannotation = new EditAnnotation();
+        
+        // an é um vetor que contém todas as anotações criadas pelo usuário
         an = editannotation.getAnnotations();
 
-        an.addElement(new Annotation(1,"Ultimo dia", "A noite\nsombria e escura\n",
-                new Date(), new Date(), new HashSet<>(Arrays.asList("doc inutil test test doc".split(" ")))));
-        an.addElement(new Annotation(2,"Merchandise", "Denis\n\n\n\nArrot",
-                new GregorianCalendar(2016, 2, 30).getTime(), new GregorianCalendar(2016, 2, 27).getTime(),
-                new HashSet<>(Arrays.asList("doc sup test test".split(" ")))));
-        an.addElement(new Annotation(3,"Sentença", "Se fosse tão facil não seria impossível",
-                new GregorianCalendar(2016, 2, 27).getTime(), new GregorianCalendar(2016, 3, 2).getTime(),
-                new HashSet<>(Arrays.asList("".split(" ")))));
-        an.addElement(new Annotation(4,"Sentença", "Se fosse tão facil não seria impossível",
-                new GregorianCalendar(2016, 2, 27).getTime(), new GregorianCalendar(2016, 4, 2).getTime(),
-                new HashSet<>(Arrays.asList("".split(" ")))));
-
         search = new Search(editannotation.getAnnotations());
+        tablemodel = new ResultsTableModel();
         versioncontrolmessage = "Bloco de anotações\nV. 1.0";
     }
-
+    
+    // Adiciona os valores dos anos na caixa de combinções, iniciando em 2016 e
+    // terminando no ano atual
     private void setComboBoxes() {
         int yearlimit = Year.now().getValue();
 
@@ -59,6 +53,7 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
+    // Verifica se a data na caixa de combinações é válida
     private int[] ValidateComboBoxes(JComboBox year, JComboBox month, JComboBox day) {
         int[] calendar = null;
         calendar = new int[]{
@@ -291,6 +286,7 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // Método chamado quando o usuário clica no botão de pesquisar
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
         String message;
         ArrayList<Annotation> results = null;
@@ -298,6 +294,7 @@ public class MainFrame extends javax.swing.JFrame {
                 CreationMonthComboBox, CreationDayComboBox);
         int[] updatecalendar = ValidateComboBoxes(UpdateYearComboBox,
                 UpdateMonthComboBox, UpdateDayComboBox);
+        // Verifica se as datas são válidas
         if (creationcalendar == null) {
             message = "Data de criação inválida";
         } else if (updatecalendar == null) {

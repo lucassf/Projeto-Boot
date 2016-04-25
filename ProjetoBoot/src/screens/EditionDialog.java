@@ -2,41 +2,41 @@ package screens;
 
 import filters.*;
 import projetoboot.*;
-import java.util.Arrays;
-import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
-import java.util.Date;
-import java.util.HashSet;
 
 public class EditionDialog extends javax.swing.JDialog {
 
-    private final TextAreaFilter textareafilter;
-    private final FieldFilter fieldfilter;
+    private TextAreaFilter textareafilter;
+    private FieldFilter fieldfilter;
     private EditAnnotation editannotation;
 
-    public EditionDialog(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    // Inicia componentes swing e instancia os filtros para os campos de entrada 
+    //do usuário
+    public final void setSwing() {
         initComponents();
         textareafilter = new TextAreaFilter(50, 50);
         ((AbstractDocument) TextArea.getDocument()).setDocumentFilter(textareafilter);
         fieldfilter = new FieldFilter(50);
         ((AbstractDocument) TitleField.getDocument()).setDocumentFilter(fieldfilter);
-        editannotation = new EditAnnotation();
     }
-    
-    public EditionDialog(java.awt.Frame parent, boolean modal,Annotation an) {
+
+    // Construtor para quando o usuário deseja criar uma nova anotação
+    public EditionDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        initComponents();
+        setSwing();
+    }
+
+    // Construtor para quando o usuário deseja editar uma anotação já criada
+    public EditionDialog(java.awt.Frame parent, boolean modal, Annotation an) {
+        super(parent, modal);
+        setSwing();
+        // Edita os campos com dados da anotação
         TextArea.setText(an.getText());
         TitleField.setText(an.getTitle());
         TagField.setText(Functions.SetToString(an.getMetatag()));
         ActionButton.setText("Atualizar");
         ActionButton.setEnabled(true);
-        textareafilter = new TextAreaFilter(50, 50);
-        ((AbstractDocument) TextArea.getDocument()).setDocumentFilter(textareafilter);
-        fieldfilter = new FieldFilter(50);
-        ((AbstractDocument) TitleField.getDocument()).setDocumentFilter(fieldfilter);
-        editannotation = new EditAnnotation();
+
     }
 
     @SuppressWarnings("unchecked")
@@ -64,11 +64,6 @@ public class EditionDialog extends javax.swing.JDialog {
 
         TextArea.setColumns(20);
         TextArea.setRows(5);
-        TextArea.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TextAreaKeyReleased(evt);
-            }
-        });
         jScrollPane2.setViewportView(TextArea);
 
         ActionButton.setText("Salvar");
@@ -140,23 +135,16 @@ public class EditionDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // Botão de ação quando o usuário deseja salvar o arquivo
     private void ActionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActionButtonActionPerformed
         /*Annotation an = new Annotation(TitleField.getText(),TextArea.getText(),
-        new Date(),new Date(),new HashSet<>(Arrays.asList(TagField.getText().split(" "))));
-        editannotation.Create(an);
-        JOptionPane.showMessageDialog(rootPane, "Anotação criada com sucesso.");
-        TextArea.setText("");
-        TagField.setText("");
-        ActionButton.setEnabled(false);*/
+         new Date(),new Date(),new HashSet<>(Arrays.asList(TagField.getText().split(" "))));
+         editannotation.Create(an);
+         JOptionPane.showMessageDialog(rootPane, "Anotação criada com sucesso.");
+         TextArea.setText("");
+         TagField.setText("");
+         ActionButton.setEnabled(false);*/
     }//GEN-LAST:event_ActionButtonActionPerformed
-
-    private void TextAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextAreaKeyReleased
-        /*if (!TextArea.getText().isEmpty()&&!TitleField.getText().isEmpty()) {
-            ActionButton.setEnabled(true);
-        } else {
-            ActionButton.setEnabled(false);
-        }*/
-    }//GEN-LAST:event_TextAreaKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
