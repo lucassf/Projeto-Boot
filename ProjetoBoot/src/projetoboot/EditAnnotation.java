@@ -183,9 +183,8 @@ public class EditAnnotation {
     public void Delete(Annotation an){
         allannotations.remove(an);
         File file = new File(an.getFile()); 
-        System.out.println(an.getTitle());
-        file.delete();
-      
+     //   System.out.println(an.getTitle());
+        file.delete();      
     }
     
     public Vector<Annotation> getAnnotations(){
