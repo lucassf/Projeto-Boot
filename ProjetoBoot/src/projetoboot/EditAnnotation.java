@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -19,13 +20,12 @@ public class EditAnnotation {
         Annotation annot;
         annot = new Annotation();
         allannotations = new Vector<>();
-        allannotations = null;        
         FilenameFilter filter = new FilenameFilter() {
           public boolean accept(File dir, String name) {
              return name.endsWith(".txt");             
           }
         };        
-        File folder = new File("C:/Users/G1511NEW/Desktop/ITA/CES-22/Lab/Projeto-Boot/ProjetoBoot");
+        File folder = new File("/C:/Users/G1511NEW/Desktop/ITA/CES-22/Lab/Projeto-Boot/ProjetoBoot");
         File[] listOfFiles = folder.listFiles(filter);
         for (int i = 0; i < listOfFiles.length; i++) {
             File file = listOfFiles[i];
@@ -34,18 +34,21 @@ public class EditAnnotation {
                 reader = new FileReader(file);
                 BufferedReader br = new BufferedReader(reader);
                 annot.setFile(br.readLine());
-                annot.setTitle(br.readLine());
+           //     System.out.println(annot.getFile());
+                annot.setTitle(br.readLine());                
+           //     System.out.println(annot.getTitle());
                 String tag = br.readLine();
                 String[] tags; 
                 tags = tag.split(",");
                 Set<String> meta = new HashSet<String>(Arrays.asList(tags));
                 annot.setMetatag(meta);
-                DateFormat format = new SimpleDateFormat("E MMM dd HH:mm:ss yyyy");
+             //   System.out.println(annot.getMetatag().toString());
+                SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
                 Date creation = null;
                 try {
                     creation = format.parse(br.readLine());
                 } catch (ParseException ex) {
-                    System.out.println("Error afasdf");
+                    System.out.println("Error 1");
                     Logger.getLogger(EditAnnotation.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 annot.setCreation(creation);
@@ -53,11 +56,11 @@ public class EditAnnotation {
                 try {
                     lastmodification = format.parse(br.readLine());
                 } catch (ParseException ex) {
-                    System.out.println("Error afasdf");
+                    System.out.println("Error 2");
                     Logger.getLogger(EditAnnotation.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 annot.setLastmodification(lastmodification);
-                String text = null;
+                String text = "";
                 int c = br.read();                
                 while (c != -1){
                     text = text + (char)c;
@@ -66,9 +69,10 @@ public class EditAnnotation {
                 annot.setText(text);
                 allannotations.add(annot);
             } catch (FileNotFoundException ex) {
-                System.out.println("Error afasdf");
+                System.out.println("Error 3");
                // Logger.getLogger(EditAnnotation.class.getName()).log(Level.SEVERE, null, ex);
             } 
+            reader.close();
         }
     }
     //cria um .txt de an e adiciona an ao vetor allannotations
@@ -107,12 +111,12 @@ public class EditAnnotation {
             bw.newLine();
             //segunda linha titulo, terceira tags, quarta data inicial e quinta data de modificaçao
             bw.write(an.getTitle());
-            bw.newLine();
-            bw.write(an.getMetatag().toString());            
-            bw.newLine();
-            String tag = an.getCreation().toString();
+            bw.newLine();            
+            String tag = an.getMetatag().toString();
             tag = tag.substring(1, tag.length() -1);
-            bw.write(tag);                  
+            bw.write(tag);   
+            bw.newLine();
+            bw.write(an.getCreation().toString());            
             bw.newLine();
             bw.write(an.getLastmodification().toString());
             bw.newLine();
@@ -133,7 +137,8 @@ public class EditAnnotation {
     public void Edit(Annotation old, Annotation nova){
         String a;
         a = old.getFile();
-        File file = new File(a);
+        System.out.print("teste");
+        File file = new File(a);        
         file.delete();
         allannotations.remove(old);           
         OutputStream os = null;

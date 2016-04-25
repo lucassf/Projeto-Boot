@@ -15,7 +15,7 @@ public class Annotation{
     private Date lastmodification;
     private Set<String> metatag;
     
-    public Annotation(){    
+    public Annotation(){
     }
     
     public Annotation(String title,String text,Date creation,Date lastmodification,
