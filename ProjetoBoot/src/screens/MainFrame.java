@@ -39,7 +39,7 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
-    public MainFrame() throws IOException {
+    public MainFrame() throws Exception {
         // Cria uma instância de EditAnnotation
         editannotation = new EditAnnotation();
         tablemodel = new ResultsTableModel();
@@ -329,19 +329,23 @@ public class MainFrame extends javax.swing.JFrame {
         EditButton.setEnabled(false);
         DeleteButton.setEnabled(false);
     }//GEN-LAST:event_SearchButtonActionPerformed
-
+    
+    //Controle de versão
     private void AboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AboutMenuItemActionPerformed
         JOptionPane.showMessageDialog(rootPane, versioncontrolmessage);
     }//GEN-LAST:event_AboutMenuItemActionPerformed
-
+    
+    // Botão adicional para sair do programa
     private void ExitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitMenuItemActionPerformed
         this.setVisible(false);
         dispose();
     }//GEN-LAST:event_ExitMenuItemActionPerformed
-
+    
+    // Abre uma caixa de diálogo permitindo o usuário editar a anotação.
     private void EditButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditButtonActionPerformed
-        new EditionDialog(this, true, tablemodel.
-                getValueAt(ResultsTable.convertRowIndexToModel(ResultsTable.getSelectedRow()))).setVisible(true);
+        int row = ResultsTable.convertRowIndexToModel(ResultsTable.getSelectedRow());
+        new EditionDialog(this, true, tablemodel.getValueAt(row), editannotation).setVisible(true);
+        tablemodel.fireTableRowsUpdated(row, row);
     }//GEN-LAST:event_EditButtonActionPerformed
 
     private void DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteButtonActionPerformed
@@ -371,24 +375,12 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_DeleteButtonActionPerformed
 
-    private void ResultsTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ResultsTableMousePressed
-        int row = ResultsTable.getSelectedRow();
-        if (row >= 0) {
-            EditButton.setEnabled(true);
-            DeleteButton.setEnabled(true);
-        }
-        if (evt.getClickCount() == 2 && evt.getButton() == evt.BUTTON1 && row >= 0) {
-            new EditionDialog(this, true, tablemodel.
-                    getValueAt(ResultsTable.convertRowIndexToModel(ResultsTable.getSelectedRow()))).setVisible(true);
-        }
-    }//GEN-LAST:event_ResultsTableMousePressed
-
     private void NewMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewMenuItemActionPerformed
-        new EditionDialog(this, true).setVisible(true);
+        new EditionDialog(this, true, editannotation).setVisible(true);
     }//GEN-LAST:event_NewMenuItemActionPerformed
 
     private void NewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewButtonActionPerformed
-        new EditionDialog(this, true).setVisible(true);
+        new EditionDialog(this, true, editannotation).setVisible(true);
     }//GEN-LAST:event_NewButtonActionPerformed
 
     private void ResetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetButtonActionPerformed
@@ -401,6 +393,18 @@ public class MainFrame extends javax.swing.JFrame {
         UpdateMonthComboBox.setSelectedIndex(0);
         UpdateDayComboBox.setSelectedIndex(0);
     }//GEN-LAST:event_ResetButtonActionPerformed
+
+    private void ResultsTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ResultsTableMousePressed
+        int row = ResultsTable.convertRowIndexToModel(ResultsTable.getSelectedRow());
+        if (row >= 0) {
+            EditButton.setEnabled(true);
+            DeleteButton.setEnabled(true);
+        }
+        if (evt.getClickCount() == 2 && evt.getButton() == evt.BUTTON1 && row >= 0) {
+            new EditionDialog(this, true, tablemodel.getValueAt(row), editannotation).setVisible(true);
+            tablemodel.fireTableRowsUpdated(row, row);
+        }
+    }//GEN-LAST:event_ResultsTableMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

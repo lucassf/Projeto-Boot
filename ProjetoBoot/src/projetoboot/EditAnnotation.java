@@ -16,15 +16,17 @@ public class EditAnnotation {
     
     private Vector<Annotation> allannotations;
     
-    public EditAnnotation() throws IOException{
+    // Construtor: Lê todos os arquivos contidos na mesma pasta do projeto
+    public EditAnnotation() throws Exception{
         Annotation annot;
         allannotations = new Vector<>();
         FilenameFilter filter = new FilenameFilter() {
           public boolean accept(File dir, String name) {
              return name.endsWith(".txt");             
           }
-        };        
-        File folder = new File("/C:/Users/asus/Documents/GitHub/Projeto-Boot/ProjetoBoot");
+        }; 
+        //Localização dos arquivos
+        File folder = new File(System.getProperty("user.dir"));
         File[] listOfFiles = folder.listFiles(filter);
         FileReader reader;
         File file;
@@ -102,7 +104,6 @@ public class EditAnnotation {
         try {
             os = new FileOutputStream(filename);
         } catch (FileNotFoundException ex) {
-          //  Logger.getLogger(EditingFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         OutputStreamWriter osw = new OutputStreamWriter(os);
         BufferedWriter bw = new BufferedWriter(osw); 
@@ -119,23 +120,21 @@ public class EditAnnotation {
             bw.newLine();
             bw.write(an.getLastmodification().toString());
             bw.newLine();
+            //ultima linha: conteúdo da anotação
             bw.write(an.getText());                        
         } catch (IOException ex) {
-           // Logger.getLogger(EditingFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         
         try {
             bw.close();
         } catch (IOException ex) {
-           // Logger.getLogger(EditingFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         an.setFile(filename);
         allannotations.add(an);
     }
-    //old: annotation a ser mudada
-    //new: a nova anotation apos a edicao
+    //an: anotação editada cujo arquivo corresponde deve ser alterado
     public void Edit(Annotation an){
         String filename;
         filename = an.getFile();
@@ -163,21 +162,19 @@ public class EditAnnotation {
             bw.newLine();
             bw.write(an.getLastmodification().toString());
             bw.newLine();
+            //ultima linha: conteúdo da anotação
             bw.write(an.getText());                        
         } catch (IOException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         try {
             bw.close();
         } catch (IOException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }        
         
     }
     //deleta um arquivo, deletando o .txt e removendo o annotation do vetor
     //An: annotation a ser removido
-    //obs: ainda nao foi testado
     public void Delete(Annotation an){
         allannotations.remove(an);
         File file = new File(an.getFile());
