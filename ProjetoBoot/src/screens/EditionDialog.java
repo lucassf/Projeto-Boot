@@ -3,8 +3,6 @@ package screens;
 import filters.*;
 import java.io.IOException;
 import projetoboot.*;
-import java.util.Arrays;
-import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
 import java.util.Date;
 import java.util.HashSet;
@@ -13,8 +11,8 @@ import java.util.logging.Logger;
 
 public class EditionDialog extends javax.swing.JDialog {
 
-    private final TextAreaFilter textareafilter;
-    private final FieldFilter fieldfilter;
+    private TextAreaFilter textareafilter;
+    private FieldFilter fieldfilter;
     private EditAnnotation editannotation;
     private Annotation anot;
 
@@ -76,11 +74,6 @@ public class EditionDialog extends javax.swing.JDialog {
 
         TextArea.setColumns(20);
         TextArea.setRows(5);
-        TextArea.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TextAreaKeyReleased(evt);
-            }
-        });
         jScrollPane2.setViewportView(TextArea);
 
         HeaderText.setText("Programa para criar e editar anotações.");

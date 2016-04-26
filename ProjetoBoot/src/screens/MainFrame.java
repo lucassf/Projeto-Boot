@@ -9,37 +9,58 @@ import java.util.Arrays;
 import java.util.HashSet;
 import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AbstractDocument;
-import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
+import javax.swing.table.TableRowSorter;
 
 public class MainFrame extends javax.swing.JFrame {
 
     private final Search search;
-    private final SimpleDateFormat dateformat;
     private final String versioncontrolmessage;
     private final EditAnnotation editannotation;
-    private Vector<Annotation> an;
+    private final ResultsTableModel tablemodel;
+    Vector<Annotation> an;
+
+    // Cria um método de comparação para as colunas da tabela com valores de data
+    private void setDateComparator() {
+        TableRowSorter<ResultsTableModel> sorter
+                = (TableRowSorter<ResultsTableModel>) ResultsTable.getRowSorter();
+        for (int i = 2; i <= 3; i++) {
+            sorter.setComparator(i, new Comparator<String>() {
+
+                @Override
+                public int compare(String o1, String o2) {
+                    return Functions.convertDate(o1).compareTo(Functions.convertDate(o2));
+                }
+            });
+        }
+    }
 
     public MainFrame() throws IOException {
+        // Cria uma instância de EditAnnotation
+        editannotation = new EditAnnotation();
+        tablemodel = new ResultsTableModel();
         initComponents();
+        ResultsTable.setAutoCreateRowSorter(true);
+        setDateComparator();
         setComboBoxes();
         ((AbstractDocument) TitleField.getDocument()).
                 setDocumentFilter(new FieldFilter(100));
         ((AbstractDocument) TagsField.getDocument()).
                 setDocumentFilter(new FieldFilter(100));
-        editannotation = new EditAnnotation();        
-        
-        //LUCAS: VERIFICAR SE EU NAO APAGUEI ALGO A MAIS
-        
+
+        // an é um vetor que contém todas as anotações criadas pelo usuário
+        an = editannotation.getAnnotations();
+
         search = new Search(editannotation.getAnnotations());
-        dateformat = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
         versioncontrolmessage = "Bloco de anotações\nV. 1.0";
     }
 
+    // Adiciona os valores dos anos na caixa de combinções, iniciando em 2016 e
+    // terminando no ano atual
     private void setComboBoxes() {
         int yearlimit = Year.now().getValue();
 
@@ -49,6 +70,7 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
+    // Verifica se a data na caixa de combinações é válida
     private int[] ValidateComboBoxes(JComboBox year, JComboBox month, JComboBox day) {
         int[] calendar = null;
         calendar = new int[]{
@@ -123,29 +145,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        ResultsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Título", "Tags", "Data de criação", "Última modificação"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ResultsTable.setModel(tablemodel);
         ResultsTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 ResultsTableMousePressed(evt);
@@ -303,34 +303,28 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // Método chamado quando o usuário clica no botão de pesquisar
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
         String message;
+        ArrayList<Annotation> results = null;
         int[] creationcalendar = ValidateComboBoxes(CreationYearComboBox,
                 CreationMonthComboBox, CreationDayComboBox);
         int[] updatecalendar = ValidateComboBoxes(UpdateYearComboBox,
                 UpdateMonthComboBox, UpdateDayComboBox);
+        // Verifica se as datas são válidas
         if (creationcalendar == null) {
             message = "Data de criação inválida";
         } else if (updatecalendar == null) {
             message = "Data de última modificação inválida";
         } else {
-            int found = search.Search(TitleField.getText(),
+            results = search.Search(TitleField.getText(),
                     new HashSet<>(Arrays.asList(TagsField.getText().split(" "))),
-                    creationcalendar, updatecalendar, Annotation.SortCriteria.LASTMODIFICATION);
+                    creationcalendar, updatecalendar, Annotation.SortCriteria.CREATION);
+            int found = results.size();
             message = found + (found != 1 ? " anotações encontradas" : " anotação encontrada");
-        }        
-       // System.out.println(editannotation.getAnnotations().firstElement().getTitle());
-        ArrayList<Annotation> results = search.GetResults();
-        DefaultTableModel model = (DefaultTableModel) ResultsTable.getModel();
-        model.setRowCount(0);
-        for (Annotation an : results) {
-            model.addRow(new Object[]{
-                an.getTitle(),
-                Functions.SetToString(an.getMetatag()),
-                dateformat.format(an.getCreation()),
-                dateformat.format(an.getLastmodification())
-            });
         }
+        tablemodel.ResetContent();
+        tablemodel.setRows(results);
         JOptionPane.showMessageDialog(rootPane, message);
         EditButton.setEnabled(false);
         DeleteButton.setEnabled(false);
@@ -346,8 +340,8 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_ExitMenuItemActionPerformed
 
     private void EditButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditButtonActionPerformed
-        new EditionDialog(this, true, search.GetResults().
-                get(ResultsTable.getSelectedRow()), editannotation).setVisible(true);
+        new EditionDialog(this, true, tablemodel.
+                getValueAt(ResultsTable.convertRowIndexToModel(ResultsTable.getSelectedRow()))).setVisible(true);
     }//GEN-LAST:event_EditButtonActionPerformed
 
     private void DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteButtonActionPerformed
@@ -358,16 +352,15 @@ public class MainFrame extends javax.swing.JFrame {
                 JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (ans == JOptionPane.YES_OPTION) {
             try {
-                int[] indexes = ResultsTable.getSelectedRows();
-                Annotation an;
-                for (int i = indexes.length - 1; i >= 0; i--) {
-                    ArrayList<Annotation> results;
-                    results = search.GetResults();
-                    an = results.get(i);
-                    editannotation.Delete(an);
-                    results.remove(i);
-                    ((DefaultTableModel) ResultsTable.getModel()).removeRow(i);
+                int[] viewindexes = ResultsTable.getSelectedRows();
+                int[] modelindexes = new int[viewindexes.length];
+
+                for (int i = 0; i < viewindexes.length; i++) {
+                    modelindexes[i] = ResultsTable.convertRowIndexToModel(viewindexes[i]);
+                    editannotation.Delete(tablemodel.getValueAt(modelindexes[i]));
                 }
+                Arrays.sort(modelindexes);
+                tablemodel.removeRows(modelindexes);
                 JOptionPane.showMessageDialog(rootPane, selectedrows + (selectedrows > 1
                         ? " anotações removidas" : " anotação removida"));
                 EditButton.setEnabled(false);
@@ -385,17 +378,17 @@ public class MainFrame extends javax.swing.JFrame {
             DeleteButton.setEnabled(true);
         }
         if (evt.getClickCount() == 2 && evt.getButton() == evt.BUTTON1 && row >= 0) {
-            new EditionDialog(this, true, search.GetResults().
-                    get(ResultsTable.getSelectedRow()), editannotation).setVisible(true);
+            new EditionDialog(this, true, tablemodel.
+                    getValueAt(ResultsTable.convertRowIndexToModel(ResultsTable.getSelectedRow()))).setVisible(true);
         }
     }//GEN-LAST:event_ResultsTableMousePressed
 
     private void NewMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewMenuItemActionPerformed
-        new EditionDialog(this, true, editannotation).setVisible(true);
+        new EditionDialog(this, true).setVisible(true);
     }//GEN-LAST:event_NewMenuItemActionPerformed
 
     private void NewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewButtonActionPerformed
-        new EditionDialog(this, true, editannotation).setVisible(true);
+        new EditionDialog(this, true).setVisible(true);
     }//GEN-LAST:event_NewButtonActionPerformed
 
     private void ResetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetButtonActionPerformed

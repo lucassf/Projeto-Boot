@@ -5,9 +5,11 @@ import java.util.Set;
 import java.util.Comparator;
 
 public class Annotation{
+
     public enum SortCriteria{
-    TITLE,CREATION,LASTMODIFICATION
+        TITLE,CREATION,LASTMODIFICATION
     };
+    
     private String file; //nome do .txt
     private String title;
     private String text;
@@ -76,9 +78,7 @@ public class Annotation{
     
     public boolean equals(Annotation an){
         boolean ret;
-        ret = an.getCreation().equals(creation)&an.getLastmodification().equals(lastmodification)
-                &an.getTitle().equals(title)&an.getMetatag().equals(metatag)&
-                an.getText().equals(text);
+        ret = an.getFile().equals(file);
         return ret;
     }
 
