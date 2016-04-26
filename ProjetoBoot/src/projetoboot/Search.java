@@ -60,8 +60,6 @@ public class Search {
             results.sort(Annotation.CreationComparison);
         } else if (sortcriteria == Annotation.SortCriteria.LASTMODIFICATION) {
             results.sort(Annotation.UpdateComparison);
-        }else if (sortcriteria == Annotation.SortCriteria.ID){
-            results.sort(Annotation.IdComparison);
         }
         return results;
     }

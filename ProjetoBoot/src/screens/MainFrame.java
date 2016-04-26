@@ -9,10 +9,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AbstractDocument;
-import java.text.SimpleDateFormat;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Vector;
+import javax.swing.table.TableRowSorter;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -22,26 +24,41 @@ public class MainFrame extends javax.swing.JFrame {
     private final ResultsTableModel tablemodel;
     Vector<Annotation> an;
 
-    public MainFrame() throws IOException{
+    // Cria um método de comparação para as colunas da tabela com valores de data
+    private void setDateComparator() {
+        TableRowSorter<ResultsTableModel> sorter
+                = (TableRowSorter<ResultsTableModel>) ResultsTable.getRowSorter();
+        for (int i = 2; i <= 3; i++) {
+            sorter.setComparator(i, new Comparator<String>() {
+
+                @Override
+                public int compare(String o1, String o2) {
+                    return Functions.convertDate(o1).compareTo(Functions.convertDate(o2));
+                }
+            });
+        }
+    }
+
+    public MainFrame() throws IOException {
         // Cria uma instância de EditAnnotation
         editannotation = new EditAnnotation();
-        
+        tablemodel = new ResultsTableModel();
         initComponents();
         ResultsTable.setAutoCreateRowSorter(true);
+        setDateComparator();
         setComboBoxes();
         ((AbstractDocument) TitleField.getDocument()).
                 setDocumentFilter(new FieldFilter(100));
         ((AbstractDocument) TagsField.getDocument()).
                 setDocumentFilter(new FieldFilter(100));
-        
+
         // an é um vetor que contém todas as anotações criadas pelo usuário
         an = editannotation.getAnnotations();
 
         search = new Search(editannotation.getAnnotations());
-        tablemodel = new ResultsTableModel();
         versioncontrolmessage = "Bloco de anotações\nV. 1.0";
     }
-    
+
     // Adiciona os valores dos anos na caixa de combinções, iniciando em 2016 e
     // terminando no ano atual
     private void setComboBoxes() {
@@ -302,7 +319,7 @@ public class MainFrame extends javax.swing.JFrame {
         } else {
             results = search.Search(TitleField.getText(),
                     new HashSet<>(Arrays.asList(TagsField.getText().split(" "))),
-                    creationcalendar, updatecalendar, Annotation.SortCriteria.ID);
+                    creationcalendar, updatecalendar, Annotation.SortCriteria.CREATION);
             int found = results.size();
             message = found + (found != 1 ? " anotações encontradas" : " anotação encontrada");
         }
@@ -324,8 +341,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void EditButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditButtonActionPerformed
         new EditionDialog(this, true, tablemodel.
-                getValueAt(ResultsTable.convertRowIndexToModel
-        (ResultsTable.getSelectedRow()))).setVisible(true);
+                getValueAt(ResultsTable.convertRowIndexToModel(ResultsTable.getSelectedRow()))).setVisible(true);
     }//GEN-LAST:event_EditButtonActionPerformed
 
     private void DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteButtonActionPerformed
@@ -338,9 +354,9 @@ public class MainFrame extends javax.swing.JFrame {
             try {
                 int[] viewindexes = ResultsTable.getSelectedRows();
                 int[] modelindexes = new int[viewindexes.length];
-                
+
                 for (int i = 0; i < viewindexes.length; i++) {
-                    modelindexes[i]=ResultsTable.convertRowIndexToModel(viewindexes[i]);
+                    modelindexes[i] = ResultsTable.convertRowIndexToModel(viewindexes[i]);
                     editannotation.Delete(tablemodel.getValueAt(modelindexes[i]));
                 }
                 Arrays.sort(modelindexes);
@@ -363,8 +379,7 @@ public class MainFrame extends javax.swing.JFrame {
         }
         if (evt.getClickCount() == 2 && evt.getButton() == evt.BUTTON1 && row >= 0) {
             new EditionDialog(this, true, tablemodel.
-                    getValueAt(ResultsTable.convertRowIndexToModel
-        (ResultsTable.getSelectedRow()))).setVisible(true);
+                    getValueAt(ResultsTable.convertRowIndexToModel(ResultsTable.getSelectedRow()))).setVisible(true);
         }
     }//GEN-LAST:event_ResultsTableMousePressed
 

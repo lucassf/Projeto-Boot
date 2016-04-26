@@ -41,7 +41,6 @@ public class EditAnnotation {
             }
         }        
         a = i + ".txt";
-        an.setId(i);
         OutputStream os = null;
         try {
             os = new FileOutputStream(a);
@@ -84,8 +83,8 @@ public class EditAnnotation {
     //obs: ainda nao foi testado
     public void Delete(Annotation an){
         allannotations.remove(an);
-        File file = new File(an.getFile());     
-        file.delete();
+        //File file = new File(an.getFile());     
+        //file.delete();
       
     }
     

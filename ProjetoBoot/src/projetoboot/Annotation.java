@@ -7,7 +7,7 @@ import java.util.Comparator;
 public class Annotation{
 
     public enum SortCriteria{
-        ID,TITLE,CREATION,LASTMODIFICATION
+        TITLE,CREATION,LASTMODIFICATION
     };
     
     private String file; //nome do .txt
@@ -16,27 +16,17 @@ public class Annotation{
     private Date creation;
     private Date lastmodification;
     private Set<String> metatag;
-    private int id;
     
     public Annotation(){    
     }
     
-    public Annotation(int id,String title,String text,Date creation,Date lastmodification,
+    public Annotation(String title,String text,Date creation,Date lastmodification,
             Set<String> metatag){
-        this.id=id;
         this.title=title;
         this.text=text;
         this.creation=creation;
         this.lastmodification=lastmodification;
         this.metatag=metatag;
-    }
-    
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
     
     public String getFile(){
@@ -88,7 +78,7 @@ public class Annotation{
     
     public boolean equals(Annotation an){
         boolean ret;
-        ret = an.getId()==id;
+        ret = an.getFile().equals(file);
         return ret;
     }
 
@@ -110,13 +100,6 @@ public class Annotation{
         @Override
         public int compare(Annotation an1,Annotation an2){
             return an1.getLastmodification().compareTo(an2.getLastmodification());
-        }
-    };
-    
-    public static Comparator<Annotation> IdComparison = new Comparator<Annotation>(){
-        @Override
-        public int compare(Annotation an1,Annotation an2){
-            return an1.getId()-an2.getId();
         }
     };
 }

@@ -9,13 +9,12 @@ import projetoboot.Functions;
 
 public class ResultsTableModel extends AbstractTableModel {
 
-    private final int COLUMNID = 0;
-    private final int COLUMNTITLE = 1;
-    private final int COLUMNTAGS = 2;
-    private final int COLUMNCREATION = 3;
-    private final int COLUMNUPDATE = 4;
+    private final int COLUMNTITLE = 0;
+    private final int COLUMNTAGS = 1;
+    private final int COLUMNCREATION = 2;
+    private final int COLUMNUPDATE = 3;
 
-    private final String[] columnNames = {"Id","Título", "Tags", "Data de Criação", 
+    private final String[] columnNames = {"Título", "Tags", "Data de Criação", 
         "Data de modificação"};
 
     private List<Annotation> annotations;
@@ -82,9 +81,6 @@ public class ResultsTableModel extends AbstractTableModel {
         Annotation an = annotations.get(rowIndex);
         Object returnvalue = null;
         switch (columnIndex) {
-            case COLUMNID:
-                returnvalue = an.getId();
-                break;
             case COLUMNTITLE:
                 returnvalue = an.getTitle();
                 break;

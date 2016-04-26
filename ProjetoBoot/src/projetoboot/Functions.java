@@ -17,7 +17,7 @@ public class Functions {
             }
             first=false;
         }
-        return ret.substring(1);
+        return ret;
     }
     
     // Verifica o array "calendar" é uma data válida
@@ -37,5 +37,16 @@ public class Functions {
     // Retorna um formato padronizado de representação de data
     public static String getDateFormat(){
         return "dd/MM/yyyy - HH:mm:ss";
+    }
+    
+    // Converte a data em um formato usado para comparação
+    public static String convertDate(String date){
+        String[] values = date.substring(0,10).split("/");
+        String newdate = "";
+        for (int i=values.length-1;i>=0;i--){
+            newdate+=values[i];
+        }
+        newdate+=date.substring(13);
+        return newdate;
     }
 }
