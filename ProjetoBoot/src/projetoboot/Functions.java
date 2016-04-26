@@ -8,10 +8,15 @@ public class Functions {
 
     public static String SetToString(Set<String> set) {
         String ret = "";
-        for (String s : set) {
-            ret += " " + s;
+        boolean first = true;
+        for (String s : set) {            
+            if (!first) {
+                ret += " ";
+            }
+            ret += s;
+            first = false;
         }
-        return ret.substring(1);
+        return ret;
     }
 
     public static boolean CheckDateIsValid(int[] calendar) {
@@ -26,3 +31,4 @@ public class Functions {
         return ret;
     }
 }
+

@@ -24,7 +24,7 @@ public class EditAnnotation {
              return name.endsWith(".txt");             
           }
         };        
-        File folder = new File("/C:/Users/G1511NEW/Desktop/ITA/CES-22/Lab/Projeto-Boot/ProjetoBoot");
+        File folder = new File("/C:/Users/asus/Documents/GitHub/Projeto-Boot/ProjetoBoot");
         File[] listOfFiles = folder.listFiles(filter);
         FileReader reader;
         File file;
@@ -39,7 +39,7 @@ public class EditAnnotation {
                 annot.setTitle(br.readLine());        
                 String tag = br.readLine();
                 String[] tags; 
-                tags = tag.split(",");
+                tags = tag.split(" ");
                 Set<String> meta = new HashSet<String>(Arrays.asList(tags));
                 annot.setMetatag(meta);                     
                 SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
@@ -79,15 +79,15 @@ public class EditAnnotation {
     //cria um .txt de an e adiciona an ao vetor allannotations
     public void Create(Annotation an){
         an.getMetatag().remove("");
-        allannotations.add(an);
+        
      //   System.out.println(allannotations.firstElement().getTitle());
         int i;
-        String a;
+        String filename;
         //verificar o proximo arquivo a ser criado
         for(i = 1; ; i++) {            
-            a = i + ".txt";
+            filename = i + ".txt";
             try {
-                FileInputStream teste = new FileInputStream(a);
+                FileInputStream teste = new FileInputStream(filename);
                 try {
                     teste.close();
                 } catch (IOException ex) {
@@ -97,10 +97,10 @@ public class EditAnnotation {
                 break;
             }
         }        
-        a = i + ".txt";
+        filename = i + ".txt";
         OutputStream os = null;
         try {
-            os = new FileOutputStream(a);
+            os = new FileOutputStream(filename);
         } catch (FileNotFoundException ex) {
           //  Logger.getLogger(EditingFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -108,14 +108,12 @@ public class EditAnnotation {
         BufferedWriter bw = new BufferedWriter(osw); 
         try {
             //nome do .txt
-            bw.write(a);
+            bw.write(filename);
             bw.newLine();
             //segunda linha titulo, terceira tags, quarta data inicial e quinta data de modificaçao
             bw.write(an.getTitle());
-            bw.newLine();            
-            String tag = an.getMetatag().toString();
-            tag = tag.substring(1, tag.length() -1);
-            bw.write(tag);   
+            bw.newLine();
+            bw.write(Functions.SetToString(an.getMetatag()));   
             bw.newLine();
             bw.write(an.getCreation().toString());            
             bw.newLine();
@@ -132,19 +130,21 @@ public class EditAnnotation {
         } catch (IOException ex) {
            // Logger.getLogger(EditingFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        an.setFile(filename);
+        allannotations.add(an);
     }
     //old: annotation a ser mudada
     //new: a nova anotation apos a edicao
-    public void Edit(Annotation old, Annotation nova){
-        String a;
-        a = old.getFile();
-        System.out.print("teste");
-        File file = new File(a);        
+    public void Edit(Annotation an){
+        String filename;
+        filename = an.getFile();
+        File file = new File(filename);        
         file.delete();
-        allannotations.remove(old);           
+                  
         OutputStream os = null;
         try {
-            os = new FileOutputStream(a);
+            os = new FileOutputStream(filename);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -152,29 +152,27 @@ public class EditAnnotation {
         BufferedWriter bw = new BufferedWriter(osw); 
         try {
             //nome do .txt
-            bw.write(a);
+            bw.write(filename);
             bw.newLine();
             //segunda linha titulo, terceira tags, quarta data inicial e quinta data de modificaçao
-            bw.write(nova.getTitle());
+            bw.write(an.getTitle());
             bw.newLine();
-            bw.write(nova.getMetatag().toString());            
+            bw.write(Functions.SetToString(an.getMetatag()));            
             bw.newLine();
-            bw.write(nova.getCreation().toString());                  
+            bw.write(an.getCreation().toString());                  
             bw.newLine();
-            bw.write(nova.getLastmodification().toString());
+            bw.write(an.getLastmodification().toString());
             bw.newLine();
-            bw.write(nova.getText());                        
+            bw.write(an.getText());                        
         } catch (IOException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
         
         try {
             bw.close();
         } catch (IOException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }      
-        allannotations.add(nova);         
+        }        
         
     }
     //deleta um arquivo, deletando o .txt e removendo o annotation do vetor
@@ -182,8 +180,7 @@ public class EditAnnotation {
     //obs: ainda nao foi testado
     public void Delete(Annotation an){
         allannotations.remove(an);
-        File file = new File(an.getFile()); 
-     //   System.out.println(an.getTitle());
+        File file = new File(an.getFile());
         file.delete();      
     }
     

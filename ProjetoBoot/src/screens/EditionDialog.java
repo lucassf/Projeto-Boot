@@ -20,22 +20,20 @@ public class EditionDialog extends javax.swing.JDialog {
 
     public EditionDialog(java.awt.Frame parent, boolean modal, EditAnnotation editanot) {
         super(parent, modal);
-        anot = null;
-      //  ActionButton.setText("Criar");
-      // ActionButton.setEnabled(true);        
+        anot = null;     
         initComponents();
         textareafilter = new TextAreaFilter(50, 50);
         ((AbstractDocument) TextArea.getDocument()).setDocumentFilter(textareafilter);
         fieldfilter = new FieldFilter(50);
         ((AbstractDocument) TitleField.getDocument()).setDocumentFilter(fieldfilter);   
         editannotation = editanot;
+        ActionButton.setEnabled(false);
     }
     
     public EditionDialog(java.awt.Frame parent, boolean modal,Annotation an, EditAnnotation editanot) {        
         super(parent, modal);
         anot = an;        
         initComponents();
-    //    System.out.println(an.getText());
         TextArea.setText(an.getText());
         TitleField.setText(an.getTitle());
         TagField.setText(Functions.SetToString(an.getMetatag()));
@@ -47,6 +45,11 @@ public class EditionDialog extends javax.swing.JDialog {
         ((AbstractDocument) TitleField.getDocument()).setDocumentFilter(fieldfilter);
         editannotation = editanot;
     }
+    
+    private boolean canCreate(){
+        return !TextArea.getText().isEmpty()&&!TitleField.getText().isEmpty();
+    }
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -85,12 +88,6 @@ public class EditionDialog extends javax.swing.JDialog {
         Version.setText("Ver 1.0");
 
         jLabel1.setText("Tags:");
-
-        TagField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TagFieldActionPerformed(evt);
-            }
-        });
 
         jLabel2.setText("Título:");
 
@@ -163,44 +160,33 @@ public class EditionDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void TextAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextAreaKeyReleased
-        /*if (!TextArea.getText().isEmpty()&&!TitleField.getText().isEmpty()) {
-            ActionButton.setEnabled(true);
-        } else {
-            ActionButton.setEnabled(false);
-        }*/
+        ActionButton.setEnabled(canCreate());
     }//GEN-LAST:event_TextAreaKeyReleased
 
     private void TitleFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TitleFieldActionPerformed
-        // TODO add your handling code here:
+        ActionButton.setEnabled(canCreate());
     }//GEN-LAST:event_TitleFieldActionPerformed
-
-    private void TagFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TagFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TagFieldActionPerformed
 
     private void ActionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActionButtonActionPerformed
         //criar anotacao nova
         if (anot == null){
            Annotation nova = new Annotation(TitleField.getText(),TextArea.getText(),
             new Date() ,new Date(), new HashSet<>(Arrays.asList(TagField.getText().split(" "))));
-            JOptionPane.showMessageDialog(rootPane, "Anotação criada com sucesso.");
             editannotation.Create(nova);
             TitleField.setText("");
             TextArea.setText("");
             TagField.setText("");
             ActionButton.setEnabled(false); 
+            JOptionPane.showMessageDialog(rootPane, "Anotação criada com sucesso.");
         }
         //editar anotacao
         else{
-           // System.out.println("teste");
-            Annotation nova = new Annotation(TitleField.getText(),TextArea.getText(),
-            anot.getCreation() ,new Date(), new HashSet<>(Arrays.asList(TagField.getText().split(" "))));
+            anot.setLastmodification(new Date());
+            anot.setTitle(TitleField.getText());
+            anot.setText(TextArea.getText());
+            anot.setMetatag(new HashSet<String>(Arrays.asList(TagField.getText().split(" "))));
+            editannotation.Edit(anot);
             JOptionPane.showMessageDialog(rootPane, "Anotação editada com sucesso.");
-            editannotation.Edit(anot, nova);
-            TitleField.setText("");
-            TextArea.setText("");
-            TagField.setText("");
-            ActionButton.setEnabled(false);
         }
     }//GEN-LAST:event_ActionButtonActionPerformed
 
